@@ -1,5 +1,5 @@
 {
-    "name": "web-internationalization",
+    "name": "@deckweiss/internationalization",
     "version": "1.0.0-rc.0",
     "scripts": {
         "dev": "vite dev",

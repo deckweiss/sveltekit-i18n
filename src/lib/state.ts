@@ -11,7 +11,6 @@ export const locales: string[] = [];
 export const translations: Record<string, Record<string, string>> = {};
 
 export function setLocale(newLocale: string) {
-    console.log('set locale', newLocale);
     // date translations fall back to 'en'
     const newDateLocale: keyof typeof dayNames = Object.keys(dayNames).includes(newLocale)
         ? (newLocale as keyof typeof dayNames)
