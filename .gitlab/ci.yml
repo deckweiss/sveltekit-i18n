@@ -26,8 +26,7 @@ publish-npm:
     - npm i -g pnpm
   script:
     - pnpm i
-    - echo "@deckweiss:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/" > .npmrc
-    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
+    - echo "//registry.npmjs.org/:_authToken=$NPM_PUBLISH_TOKEN" >> .npmrc
     - pnpm publish
   rules:
     - if: '$CI_COMMIT_MESSAGE =~ /^chore: release/ && $CI_COMMIT_BRANCH == "main"'
