@@ -2,12 +2,6 @@
 This repository contains internationalization for SvelteKit.
 
 ## Installation
-### Prerequesites
-You need to associate packages with `@deckweiss` scope to the Deckweiss npm registry.
-```sh
-pnpm config set @deckweiss:registry https://git.deckweiss.at/api/v4/packages/npm/
-```
-
 ### 1. Install package
 ```sh
 pnpm i @deckweiss/internationalization
@@ -89,7 +83,7 @@ This package is compatible with [i18next JSON v4](https://www.i18next.com/misc/j
 | $t('app.name') | "Example app" |
 | $t('app.day', { date: new Date(1997, 4, 22) })} | "Today is Thursday" |
 
-Date format symbols can be found [here](https://github.com/felixge/node-dateformat?tab=readme-ov-file#mask-options)
+Date format symbols can be found [here](https://github.com/felixge/node-dateformat?tab=readme-ov-file#mask-options) and as of now only german and english translations of dates are bundled into the package.
 
 
 ## Contribution
