@@ -1,58 +1,92 @@
-# create-svelte
+# Getting started
+This repository contains internationalization for SvelteKit.
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+## Installation
+### Prerequesites
+You need to associate packages with `@deckweiss` scope to the Deckweiss npm registry.
+```sh
+pnpm config set @deckweiss:registry https://git.deckweiss.at/api/v4/packages/npm/
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+### 1. Install package
+```sh
+pnpm i @deckweiss/internationalization
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+### 2. Initialize i18n
+```typescript
+// src/i18n.ts
+import { initialize as initializeI18n } from '@deckweiss/internationalization';
+import de from '$lib/translations/de.json';
+import en from '$lib/translations/en.json';
 
-## Building
-
-To build your library:
-
-```bash
-npm run package
+initializeI18n({
+    defaultLocale: 'en',
+    locales: {
+        de,
+        en
+    }
+});
 ```
 
-To create a production version of your showcase app:
+```typescript
+// src/hooks.server.ts
+import { handle } from '@deckweiss/internationalization';
+import './i18n.js';
 
-```bash
-npm run build
+export { handle };
 ```
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
+```typescript
+// hooks.client.ts
+import './i18n.js';
 ```
+
+### 3. Use translations
+```svelte
+// +page.svelte
+<script>
+    import { t } from '@deckweiss/internationalization';
+</script>
+
+
+<p>{$t('app.day', { date: Date.now() })}</p>
+```
+
+### 4. (optional) Update selected locale
+```svelte
+// src/lib/components/language-picker.svelte
+<script>
+    import { locale, locales, setLocale } from '@deckweiss/internationalization';
+</script>
+
+
+<select value={$locale} on:change={(event) => setLocale(event.target.value)}>
+    <option disabled>Choose language</option>
+    {#each locales as l}
+        <option value={l} selected={l === $locale}>{l}</option>
+    {/each}
+</select>
+```
+
+
+## JSON Format
+This package is compatible with [i18next JSON v4](https://www.i18next.com/misc/json-format#i18next-json-v4). Although, it currently does only support nested keys and interpolation with formatting.
+
+### Examples
+```json
+// src/lib/translations/en.json
+{
+    "app: {
+        "name": "Example app",
+        "day": "Today is {{date, date(format: dddd)}}"
+    }
+}
+```
+
+| Usage | Output |
+| ----- | ------ |
+| $t('app.name') | "Example app" |
+| $t('app.day', { date: new Date(1997, 4, 22) })} | "Today is Thursday" |
+
+> Date format symbols can be found [here](https://github.com/felixge/node-dateformat?tab=readme-ov-file#mask-options)
