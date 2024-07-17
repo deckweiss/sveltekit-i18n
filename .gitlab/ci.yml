@@ -22,7 +22,7 @@ publish-npm:
     - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
     - npm publish
   rules:
-    - if: $CI_COMMIT_MESSAGE =~ /^chore: release/ && $CI_COMMIT_BRANCH == main
+    - if: '$CI_COMMIT_MESSAGE =~ /^chore:\srelease/ && $CI_COMMIT_BRANCH == main'
       when: always
   dependencies:
     - build
