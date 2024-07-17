@@ -27,7 +27,7 @@ publish-npm:
   script:
     - pnpm i
     - echo "//registry.npmjs.org/:_authToken=$NPM_PUBLISH_KEY" >> .npmrc
-    - pnpm publish
+    - pnpm publish --access=public
   rules:
     - if: '$CI_COMMIT_MESSAGE =~ /^chore: release/ && $CI_COMMIT_BRANCH == "main"'
       when: always
