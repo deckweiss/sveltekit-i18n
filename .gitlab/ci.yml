@@ -9,6 +9,7 @@ build:
   before_script:
     - npm i -g pnpm
   script:
+    - pnpm i
     - pnpm package
   artifacts:
     paths:
