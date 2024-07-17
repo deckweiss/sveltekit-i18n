@@ -77,7 +77,7 @@ This package is compatible with [i18next JSON v4](https://www.i18next.com/misc/j
 ```json
 // src/lib/translations/en.json
 {
-    "app: {
+    "app": {
         "name": "Example app",
         "day": "Today is {{date, date(format: dddd)}}"
     }
@@ -89,4 +89,4 @@ This package is compatible with [i18next JSON v4](https://www.i18next.com/misc/j
 | $t('app.name') | "Example app" |
 | $t('app.day', { date: new Date(1997, 4, 22) })} | "Today is Thursday" |
 
-> Date format symbols can be found [here](https://github.com/felixge/node-dateformat?tab=readme-ov-file#mask-options)
+Date format symbols can be found [here](https://github.com/felixge/node-dateformat?tab=readme-ov-file#mask-options)
