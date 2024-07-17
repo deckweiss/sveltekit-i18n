@@ -1,3 +1,5 @@
 {
-    "app.name": "New App"
+    "app": {
+        "name": "New App"
+    }
 }

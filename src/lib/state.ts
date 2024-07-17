@@ -32,7 +32,9 @@ export interface Configuration {
 }
 
 export function initialize(configuration: Configuration) {
-    Object.assign(translations, configuration.locales);
+    Object.entries(configuration.locales).forEach(([locale, values]) => {
+        translations[locale] = flattenObject(values);
+    });
     Object.keys(translations).forEach((key) => locales.push(key));
 
     // if on client, read cookie instantly
@@ -45,4 +47,22 @@ export function initialize(configuration: Configuration) {
             setLocale(userSelectedLocale);
         }
     }
+}
+
+function flattenObject(obj: any, parentKey = '') {
+    let flattened = {};
+
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            const propName = parentKey ? `${parentKey}.${key}` : key;
+
+            if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                Object.assign(flattened, flattenObject(obj[key], propName));
+            } else {
+                flattened[propName] = obj[key];
+            }
+        }
+    }
+
+    return flattened;
 }
