@@ -90,3 +90,9 @@ This package is compatible with [i18next JSON v4](https://www.i18next.com/misc/j
 | $t('app.day', { date: new Date(1997, 4, 22) })} | "Today is Thursday" |
 
 Date format symbols can be found [here](https://github.com/felixge/node-dateformat?tab=readme-ov-file#mask-options)
+
+
+## Contribution
+### Create a new release
+1. Update package version either by hand or with `pnpm version`.
+2. The commit message onto main must begin with `chore: release`
