@@ -30,6 +30,38 @@ export const dayNames = {
         'Thursday',
         'Friday',
         'Saturday'
+    ],
+    es: [
+        'Dom',
+        'Lun',
+        'Mar',
+        'Mié',
+        'Jue',
+        'Vie',
+        'Sáb',
+        'Domingo',
+        'Lunes',
+        'Martes',
+        'Miércoles',
+        'Jueves',
+        'Viernes',
+        'Sábado'
+    ],
+    it: [
+        'Dom',
+        'Lun',
+        'Mar',
+        'Mer',
+        'Gio',
+        'Ven',
+        'Sab',
+        'Domenica',
+        'Lunedì',
+        'Martedì',
+        'Mercoledì',
+        'Giovedì',
+        'Venerdì',
+        'Sabato'
     ]
 };
 
@@ -85,10 +117,64 @@ export const monthNames = {
         'October',
         'November',
         'December'
+    ],
+    es: [
+        'Ene',
+        'Feb',
+        'Mar',
+        'Abr',
+        'May',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dic',
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre'
+    ],
+    it: [
+        'Gen',
+        'Feb',
+        'Mar',
+        'Apr',
+        'Mag',
+        'Giu',
+        'Lug',
+        'Ago',
+        'Set',
+        'Ott',
+        'Nov',
+        'Dic',
+        'Gennaio',
+        'Febbraio',
+        'Marzo',
+        'Aprile',
+        'Maggio',
+        'Giugno',
+        'Luglio',
+        'Agosto',
+        'Settembre',
+        'Ottobre',
+        'Novembre',
+        'Dicembre'
     ]
 };
 
 export const timeNames = {
     de: ['a', 'p', 'am', 'pm', 'A', 'P', 'AM', 'PM'],
-    en: ['a', 'p', 'am', 'pm', 'A', 'P', 'AM', 'PM']
+    en: ['a', 'p', 'am', 'pm', 'A', 'P', 'AM', 'PM'],
+    es: ['a', 'p', 'a.m.', 'p.m.', 'A', 'P', 'A.M.', 'P.M.'],
+    it: ['a', 'p', 'AM', 'PM', 'A', 'P', 'AM', 'PM']
 };
