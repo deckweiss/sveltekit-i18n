@@ -1,6 +1,16 @@
 {
     "name": "@deckweiss/internationalization",
     "version": "1.1.1",
+    "homepage": "https://github.com/deckweiss/sveltekit-i18n",
+    "license": "MIT",
+    "author": {
+        "name": "Alexander Betz",
+        "email": "alexander.betz@deckweiss.at"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/deckweiss/sveltekit-i18n"
+    },
     "scripts": {
         "dev": "vite dev",
         "build": "vite build && npm run package",
