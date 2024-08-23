@@ -1,6 +1,6 @@
 {
     "name": "@deckweiss/internationalization",
-    "version": "1.1.4",
+    "version": "1.2.0",
     "homepage": "https://github.com/deckweiss/sveltekit-i18n",
     "license": "MIT",
     "author": {
