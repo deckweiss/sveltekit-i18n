@@ -48,6 +48,19 @@ describe('translate', () => {
         );
     });
 
+    it('can handle mulitple functions', () => {
+        translations.en = {
+            'app.day':
+                'Today is {{date, date(format: dddd)}} and tomorrow {{date2, date(format: dddd)}}'
+        };
+        expect(
+            translate('en', 'app.day', {
+                date: new Date(1997, 4, 22),
+                date2: new Date(1997, 4, 23)
+            })
+        ).toEqual('Today is Thursday and tomorrow Friday');
+    });
+
     it('can handle functions and checks required parameters', () => {
         translations.en = {
             'app.day': 'Today is {{date, date}}'

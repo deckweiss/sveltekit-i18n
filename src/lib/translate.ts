@@ -1,6 +1,6 @@
 import { derived } from 'svelte/store';
 import dateFormat from 'dateformat';
-import { locale, locales, translations } from './state.js';
+import { locale, translations } from './state.js';
 import { browser } from '$app/environment';
 
 export function translate(locale: string, key: string, params: Record<string, any>): string {
@@ -17,50 +17,60 @@ export function translate(locale: string, key: string, params: Record<string, an
         return key;
     }
 
-    // Replace any passed in variables in the translation string.
-    Object.keys(params).map((k) => {
-        const regex = new RegExp(`{{\\s*${k}.*}}`, 'g');
-        Array.from(text.matchAll(regex)).forEach((match) => {
-            const wholeInterpolation = match[0];
-            const hasFunctionCall = wholeInterpolation.indexOf(',') > 0;
+    const regex = new RegExp('{{\\s*[^{]*}}', 'g');
+    Array.from(text.matchAll(regex)).forEach((match) => {
+        const wholeInterpolation = match[0];
+        const hasFunctionCall = wholeInterpolation.indexOf(',') > 0;
+        const varName = wholeInterpolation
+            .substring(
+                2,
+                hasFunctionCall ? wholeInterpolation.indexOf(',') : wholeInterpolation.length - 2
+            )
+            .trim();
 
-            if (hasFunctionCall) {
-                const functionCall = wholeInterpolation
-                    .slice(wholeInterpolation.indexOf(',') + 1, -2)
-                    .trim();
-                let functionName = '';
-                let functionArguments: Record<string, string> = {};
-
-                if (functionCall.includes('(')) {
-                    functionName = functionCall.slice(0, functionCall.indexOf('('));
-                    functionArguments = Object.fromEntries(
-                        functionCall
-                            .slice(functionCall.indexOf('(') + 1, -1)
-                            .split(';')
-                            .map((arg) => arg.split(':').map((_arg) => _arg.trim()))
-                    );
-                } else {
-                    functionName = functionCall;
-                }
-
-                switch (functionName) {
-                    case 'date':
-                        if (functionArguments.format) {
-                            text = text.replace(
-                                wholeInterpolation,
-                                dateFormat(params[k], functionArguments.format)
-                            );
-                        } else if (browser) {
-                            console.warn(
-                                `Translation '${text}' is missing required parameter 'format'. Example: '{{date, date(format: dd.mm.yyyy)}}'`
-                            );
-                        }
-                        break;
-                }
-            } else {
-                text = text.replace(wholeInterpolation, params[k]);
+        const resolveVariableContent = params[varName];
+        if (typeof resolveVariableContent === 'undefined') {
+            if (browser) {
+                console.warn(
+                    `Translation '${text}' is missing variable '${varName}'. Consider adding your variable to $t().`
+                );
             }
-        });
+        } else if (hasFunctionCall) {
+            const functionCall = wholeInterpolation
+                .slice(wholeInterpolation.indexOf(',') + 1, -2)
+                .trim();
+            let functionName = '';
+            let functionArguments: Record<string, string> = {};
+
+            if (functionCall.includes('(')) {
+                functionName = functionCall.slice(0, functionCall.indexOf('('));
+                functionArguments = Object.fromEntries(
+                    functionCall
+                        .slice(functionCall.indexOf('(') + 1, -1)
+                        .split(';')
+                        .map((arg) => arg.split(':').map((_arg) => _arg.trim()))
+                );
+            } else {
+                functionName = functionCall;
+            }
+
+            switch (functionName) {
+                case 'date':
+                    if (functionArguments.format) {
+                        text = text.replace(
+                            wholeInterpolation,
+                            dateFormat(params[varName], functionArguments.format)
+                        );
+                    } else if (browser) {
+                        console.warn(
+                            `Translation '${text}' is missing required parameter 'format'. Example: '{{date, date(format: dd.mm.yyyy)}}'`
+                        );
+                    }
+                    break;
+            }
+        } else {
+            text = text.replace(wholeInterpolation, params[varName]);
+        }
     });
 
     return text;
