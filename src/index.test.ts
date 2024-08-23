@@ -72,13 +72,13 @@ describe('translate', () => {
     it('can handle date formatting', () => {
         translations.en = {
             'app.day': 'Today is {{date, date(format: dddd)}}',
-            'app.day2': '{{date, date(format: dddd, dd.mm.yyyy)}}'
+            'app.day2': '{{date, date(format: dddd, dd.mm.yyyy HH:MM)}}'
         };
         expect(translate('en', 'app.day', { date: new Date(1997, 4, 22) })).toEqual(
             'Today is Thursday'
         );
         expect(translate('en', 'app.day2', { date: new Date(1997, 4, 22) })).toEqual(
-            'Thursday, 22.05.1997'
+            'Thursday, 22.05.1997 00:00'
         );
     });
 });

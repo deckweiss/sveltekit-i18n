@@ -48,8 +48,12 @@ export function translate(locale: string, key: string, params: Record<string, an
                     functionCall
                         .slice(functionCall.indexOf('(') + 1, -1)
                         .split(';')
-                        .map((arg) => arg.split(':').map((_arg) => _arg.trim()))
+                        .map((arg) => [
+                            arg.split(':')[0].trim(),
+                            arg.substring(arg.indexOf(':') + 1).trim()
+                        ])
                 );
+                console.log(functionArguments);
             } else {
                 functionName = functionCall;
             }
