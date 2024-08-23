@@ -91,6 +91,26 @@ Date format symbols can be found [here](https://github.com/felixge/node-dateform
 - Spanish
 
 
+## Supported Interpolations
+### Date and Time
+```json
+// src/lib/translations/en.json
+{
+    "day": "Today is {{date, date(format: dddd, dd.mm.yyyy)}}" // Output: "Today is Friday, 23.05.1997"
+}
+```
+
+### Numbers and Currency
+The `options` argument gets directly passed into the `Intl.NumberFormat` constructor. Hence, you can configure any option in JSON syntax.
+```json
+// src/lib/translations/en.json
+{
+    "number": "{{count, number(options: {\"style\": \"decimal\", \"minimumFractionDigits\": 5})}}", // Output: "5,132.95000"
+    "currency": "{{amount, number(options: {\"style\": \"currency\", \"currency\": \"EUR\"})}}" // Output: "5,132.95 €"
+}
+```
+
+
 ## Contribution
 ### Create a new release
 1. Update package version either by hand or with `pnpm version`.

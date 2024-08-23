@@ -17,7 +17,7 @@ export function translate(locale: string, key: string, params: Record<string, an
         return key;
     }
 
-    const regex = new RegExp('{{\\s*[^{]*}}', 'g');
+    const regex = new RegExp('({{.*?}})?', 'g');
     Array.from(text.matchAll(regex)).forEach((match) => {
         const wholeInterpolation = match[0];
         const hasFunctionCall = wholeInterpolation.indexOf(',') > 0;
@@ -53,7 +53,6 @@ export function translate(locale: string, key: string, params: Record<string, an
                             arg.substring(arg.indexOf(':') + 1).trim()
                         ])
                 );
-                console.log(functionArguments);
             } else {
                 functionName = functionCall;
             }
@@ -68,6 +67,18 @@ export function translate(locale: string, key: string, params: Record<string, an
                     } else if (browser) {
                         console.warn(
                             `Translation '${text}' is missing required parameter 'format'. Example: '{{date, date(format: dd.mm.yyyy)}}'`
+                        );
+                    }
+                    break;
+                case 'number':
+                    if (functionArguments.options) {
+                        const numberFormat = new Intl.NumberFormat(
+                            locale,
+                            JSON.parse(functionArguments.options)
+                        );
+                        text = text.replace(
+                            wholeInterpolation,
+                            numberFormat.format(params[varName])
                         );
                     }
                     break;

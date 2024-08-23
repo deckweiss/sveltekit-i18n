@@ -81,4 +81,15 @@ describe('translate', () => {
             'Thursday, 22.05.1997 00:00'
         );
     });
+
+    it('can handle number formatting', () => {
+        translations.en = {
+            number: '{{count, number(options: {"style": "decimal", "minimumFractionDigits": 5})}}',
+            currency: '{{amount, number(options: {"style": "currency", "currency": "EUR"})}}'
+        };
+        translations.de = translations.en;
+        expect(translate('en', 'number', { count: Math.PI })).toEqual('3.14159');
+        expect(translate('de', 'number', { count: 5132.95 })).toEqual('5.132,95000');
+        expect(translate('de', 'currency', { amount: 5132.95 })).toEqual('5.132,95\u00a0€'); // spaces get formated as UTF-8 Character 160 (no-break space)
+    });
 });
