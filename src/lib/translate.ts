@@ -17,7 +17,7 @@ export function translate(locale: string, key: string, params: Record<string, an
         return key;
     }
 
-    const regex = new RegExp('({{.*?}})?', 'g');
+    const regex = new RegExp('{{(.*?}})?', 'g');
     Array.from(text.matchAll(regex)).forEach((match) => {
         const wholeInterpolation = match[0];
         const hasFunctionCall = wholeInterpolation.indexOf(',') > 0;
@@ -30,11 +30,9 @@ export function translate(locale: string, key: string, params: Record<string, an
 
         const resolveVariableContent = params[varName];
         if (typeof resolveVariableContent === 'undefined') {
-            if (browser) {
-                console.warn(
-                    `Translation '${text}' is missing variable '${varName}'. Consider adding your variable to $t().`
-                );
-            }
+            console.warn(
+                `Translation '${text}' is missing variable '${varName}'. Consider adding your variable to $t().`
+            );
         } else if (hasFunctionCall) {
             const functionCall = wholeInterpolation
                 .slice(wholeInterpolation.indexOf(',') + 1, -2)
