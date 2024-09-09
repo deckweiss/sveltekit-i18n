@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { translate } from '$lib/translate.js';
-import { translations } from '$lib/state.js';
+import { initialize, locale, translations, type Configuration } from '$lib/state.js';
+import { get } from 'svelte/store';
 
 describe('translate', () => {
     it('returns key when translation is not found', () => {

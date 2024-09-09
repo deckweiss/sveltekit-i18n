@@ -36,6 +36,7 @@ export function initialize(configuration: Configuration) {
         translations[locale] = flattenObject(values);
     });
     Object.keys(translations).forEach((key) => locales.push(key));
+    setLocale(configuration.defaultLocale);
 
     // if on client, read cookie instantly
     if (browser) {
