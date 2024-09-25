@@ -5,6 +5,7 @@ import { parse } from 'cookie';
 import { browser } from '$app/environment';
 import { COOKIE_NAME } from './constants.js';
 
+let config: Required<Configuration> = { defaultLocale: '', locales: {}, useCookie: false };
 const _locale = writable('');
 export const locale = derived(_locale, ($locale) => $locale);
 export const locales: string[] = [];
@@ -21,7 +22,7 @@ export function setLocale(newLocale: string) {
 
     _locale.set(newLocale);
 
-    if (browser) {
+    if (browser && config.useCookie) {
         document.cookie = `${COOKIE_NAME}=${newLocale};path=/`;
     }
 }
@@ -29,17 +30,23 @@ export function setLocale(newLocale: string) {
 export interface Configuration {
     defaultLocale: string;
     locales: Record<string, Record<string, any>>;
+    /**
+     * if not set defaults to true
+     */
+    useCookie?: boolean;
 }
 
 export function initialize(configuration: Configuration) {
+    Object.assign(config, configuration);
     Object.entries(configuration.locales).forEach(([locale, values]) => {
         translations[locale] = flattenObject(values);
     });
     Object.keys(translations).forEach((key) => locales.push(key));
+
     setLocale(configuration.defaultLocale);
 
     // if on client, read cookie instantly
-    if (browser) {
+    if (browser && config.useCookie) {
         const cookies = parse(document.cookie);
         const userSelectedLocale = cookies.hasOwnProperty(COOKIE_NAME)
             ? cookies[COOKIE_NAME]
