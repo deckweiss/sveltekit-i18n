@@ -22,8 +22,12 @@ export function setLocale(newLocale: string) {
 
     _locale.set(newLocale);
 
-    if (browser && config.useCookie) {
-        document.cookie = `${COOKIE_NAME}=${newLocale};path=/`;
+    if (browser) {
+        if (config.useCookie) {
+            document.cookie = `${COOKIE_NAME}=${newLocale};path=/`;
+        } else {
+            document.cookie = `${COOKIE_NAME}=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+        }
     }
 }
 
