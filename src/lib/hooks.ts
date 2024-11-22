@@ -9,5 +9,7 @@ export const handle: Handle = function ({ event, resolve }) {
         setLocale(userLocale);
     }
 
-    return resolve(event);
+    return resolve(event, {
+        transformPageChunk: ({ html }) => html.replace('%lang%', userLocale ?? '')
+    });
 };

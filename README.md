@@ -19,7 +19,8 @@ initializeI18n({
     locales: {
         de,
         en
-    }
+    },
+    useCookie: true
 });
 ```
 
@@ -34,6 +35,32 @@ export { handle };
 ```typescript
 // hooks.client.ts
 import './i18n.js';
+```
+
+```html
+<!-- app.html -->
+<html lang="%lang">
+    ...
+</html
+```
+
+```typescript
+// +layout.server.ts
+import { get } from 'svelte/store';
+import { locale} from '@deckweiss/internationalization';
+
+export function load(event) {
+    return { userLocale: get(locale) }
+}
+```
+
+```typescript
+// +layout.ts
+import { setLocale } from '@deckweiss/internationalization';
+
+export function load(event) {
+    setLocale(event.data.userLocale)
+}
 ```
 
 ### 3. Use translations

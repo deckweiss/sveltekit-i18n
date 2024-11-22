@@ -7,5 +7,6 @@ initializeI18n({
     locales: {
         de,
         en
-    }
+    },
+    useCookie: true
 });

@@ -28,6 +28,7 @@ export function setLocale(newLocale: string) {
         } else {
             document.cookie = `${COOKIE_NAME}=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
         }
+        document.querySelector('html')?.setAttribute('lang', newLocale);
     }
 }
 
