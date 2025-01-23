@@ -1,12 +1,14 @@
-import { initialize as initializeI18n } from '@deckweiss/internationalization';
-import de from '$lib/translations/de.json';
-import en from '$lib/translations/en.json';
+import { setupI18n } from '@deckweiss/internationalization';
 
-initializeI18n({
-    defaultLocale: 'en',
+setupI18n({
+    defaultLocale: 'de',
     locales: {
-        de,
-        en
+        de: {
+            'app.name': 'Deutscher Name'
+        },
+        en: {
+            'app.name': 'English name'
+        }
     },
-    useCookie: true
+    useCookie: false
 });

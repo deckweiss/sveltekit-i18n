@@ -1,3 +1,4 @@
+
 # Getting started
 This repository contains internationalization for SvelteKit.
 
@@ -7,20 +8,20 @@ This repository contains internationalization for SvelteKit.
 pnpm i @deckweiss/internationalization
 ```
 
-### 2. Initialize i18n
+### 2.a Setup (with cookies)
+
 ```typescript
 // src/i18n.ts
-import { initialize as initializeI18n } from '@deckweiss/internationalization';
+import { setupI18n } from '@deckweiss/internationalization';
 import de from '$lib/translations/de.json';
 import en from '$lib/translations/en.json';
 
-initializeI18n({
+setupI18n({
     defaultLocale: 'en',
     locales: {
         de,
         en
     },
-    useCookie: true
 });
 ```
 
@@ -39,53 +40,120 @@ import './i18n.js';
 
 ```html
 <!-- app.html -->
-<html lang="%lang">
+<html lang="%lang%">
     ...
 </html
 ```
 
 ```typescript
 // +layout.server.ts
-import { get } from 'svelte/store';
-import { locale} from '@deckweiss/internationalization';
-
 export function load(event) {
-    return { userLocale: get(locale) }
+    return { locale: event.locals.i18n.locale }
 }
+```
+
+```svelte
+// +layout.svelte
+<script lang="ts">
+	import { setI18nContext, useI18n } from '@deckweiss/internationalization';
+
+	let { data, children } = $props();
+
+	setI18nContext(data.locale)
+</script>
+
+{@render children()}
+```
+
+### 2.b Setup (cookie-less via URL param)
+
+Example url: `example.com/en/...` or `example.com/de/...`
+
+```typescript
+// src/i18n.ts
+import { setupI18n } from '@deckweiss/internationalization';
+import de from '$lib/translations/de.json';
+import en from '$lib/translations/en.json';
+
+setupI18n({
+    defaultLocale: 'en',
+    locales: {
+        de,
+        en
+    },
+});
 ```
 
 ```typescript
-// +layout.ts
-import { setLocale } from '@deckweiss/internationalization';
+// src/hooks.server.ts
+import { handle } from '@deckweiss/internationalization';
+import './i18n.js';
 
+export { handle };
+```
+
+```typescript
+// hooks.client.ts
+import './i18n.js';
+```
+
+```html
+<!-- app.html -->
+<html lang="%lang%">
+    ...
+</html
+```
+
+```typescript
+// src/routes/[locale]/+layout.server.ts
 export function load(event) {
-    setLocale(event.data.userLocale)
+	event.locals.i18n.setLocale(event.params.locale)
+    return { locale: event.locals.i18n.locale }
 }
 ```
 
-### 3. Use translations
+```svelte
+// src/routes/[locale]/+layout.svelte
+<script lang="ts">
+	import { setI18nContext, useI18n } from '@deckweiss/internationalization';
+
+	let { data, children } = $props();
+
+	setI18nContext(data.locale)
+</script>
+
+{@render children()}
+```
+
+### 3. Usage
 ```svelte
 // +page.svelte
 <script>
-    import { t } from '@deckweiss/internationalization';
+    import { useI18n } from '@deckweiss/internationalization';
+    
+	const i18n = useI18n();
 </script>
 
-
-<p>{$t('app.day', { date: Date.now() })}</p>
+<p>{i18n.t('app.day', { date: Date.now() })}</p>
 ```
 
+The i18n instance is available in all server files, form actions and server hooks (+layout.server.ts, +page.server.ts, +server.ts) via: `event.locals.i18n`.
+
 ### 4. (optional) Update selected locale
+*Hint: In cookie-less mode you want to to additionally link from e.g. /de to /en to be consistent across page reloads*
+
 ```svelte
 // src/lib/components/language-picker.svelte
 <script>
-    import { locale, locales, setLocale } from '@deckweiss/internationalization';
+    import { useI18n } from '@deckweiss/internationalization';
+
+	const i18n = useI18n()
 </script>
 
-
-<select value={$locale} on:change={(event) => setLocale(event.target.value)}>
+<select onchange={(event) => i18n.setLocale(event.target.value)}>
     <option disabled>Choose language</option>
     {#each locales as l}
-        <option value={l} selected={l === $locale}>{l}</option>
+        <option value={l} selected={l === i18n.locale}>{l}</option>
     {/each}
 </select>
 ```
@@ -136,6 +204,9 @@ The `options` argument gets directly passed into the `Intl.NumberFormat` constru
     "currency": "{{amount, number(options: {\"style\": \"currency\", \"currency\": \"EUR\"})}}" // Output: "5,132.95 €"
 }
 ```
+
+## Known issues
+### i18n instance is not available in +page.ts and +layout.ts files
 
 
 ## Contribution

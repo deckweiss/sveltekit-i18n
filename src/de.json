@@ -1,3 +1,0 @@
-{
-    "app.day": "Heute ist {{date, date(format: dddd)}}"
-}

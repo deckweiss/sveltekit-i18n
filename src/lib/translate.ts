@@ -1,9 +1,12 @@
-import { derived } from 'svelte/store';
-import dateFormat from 'dateformat';
-import { locale, translations } from './state.js';
 import { browser } from '$app/environment';
+import dateFormat from 'dateformat';
 
-export function translate(locale: string, key: string, params: Record<string, any>): string {
+export function translate(
+    locale: string,
+    translations: Record<string, Record<string, string>>,
+    key: string,
+    params: Record<string, any>
+): string {
     if (!key) {
         if (browser) console.warn('Please provide a translation key');
         return '[no key provided]';
@@ -88,10 +91,3 @@ export function translate(locale: string, key: string, params: Record<string, an
 
     return text;
 }
-
-export const t = derived(
-    locale,
-    ($locale) =>
-        (key: string, vars = {}) =>
-            translate($locale, key, vars)
-);

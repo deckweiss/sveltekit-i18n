@@ -1,5 +1,7 @@
+// Reexport your entry components here
 import { handle } from './hooks.js';
-import { initialize, locale, locales, setLocale } from './state.js';
-import { t } from './translate.js';
+import { type I18n } from './types.js';
+import { setupI18n } from './config.svelte.js';
+import { setI18nContext, useI18n } from './useI18n.js';
 
-export { handle, initialize, t, locale, locales, setLocale };
+export { handle, setI18nContext, setupI18n, useI18n };
