@@ -2,7 +2,7 @@ export interface I18n {
     locale: string;
     locales: string[];
     setLocale: (locale: string) => void;
-    t: ((key: string) => string) | ((key: string, vars: Record<string, any>) => string);
+    t: (key: string, vars?: Record<string, any>) => string;
 }
 
 declare global {

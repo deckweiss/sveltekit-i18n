@@ -7,8 +7,8 @@ import { browser } from '$app/environment';
 
 export class I18nImpl implements I18n {
     private currentLocale: string = $state('');
-    private _t = $derived((key: string, vars = {}) =>
-        translate(this.currentLocale, this.config.locales, key, vars)
+    private _t = $derived((key: string, vars?: Record<string, string>) =>
+        translate(this.currentLocale, this.config.locales, key, vars ?? {})
     );
 
     constructor(
