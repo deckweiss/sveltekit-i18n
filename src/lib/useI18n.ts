@@ -9,7 +9,12 @@ export function setI18nContext(locale: string) {
     setContext(contextKey, new I18nImpl(locale, getConfig()));
 }
 
-export function useI18n(): I18n {
+export function useI18n(locale: string | undefined = undefined): I18n {
+    // fallback for isolated usage
+    if (locale) {
+        return new I18nImpl(locale, getConfig());
+    }
+
     const i18nFromContext = getContext<I18n>(contextKey);
     if (!i18nFromContext) {
         throw new Error(
