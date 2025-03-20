@@ -13,6 +13,11 @@ export const handle: Handle = function ({ event, resolve }) {
         if (userLocale) {
             i18n.setLocale(userLocale);
         }
+    } else if (config.setLocale) {
+        const userLocale = config.setLocale(event);
+        if (userLocale) {
+            i18n.setLocale(userLocale);
+        }
     }
 
     return resolve(event, {

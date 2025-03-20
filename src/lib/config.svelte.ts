@@ -1,8 +1,11 @@
+import type { RequestEvent } from '@sveltejs/kit';
+
 export interface Config {
     defaultLocale: string;
     locales: Record<string, Record<string, any>>;
     useCookie: boolean;
     cookieName: string;
+    setLocale?: (event: RequestEvent) => string | null | undefined;
 }
 
 export interface UserConfig {
@@ -13,6 +16,10 @@ export interface UserConfig {
      */
     useCookie?: boolean;
     cookieName?: string;
+    /**
+     * Should be used when useCookie = false to still initialize locale correctly
+     */
+    setLocale?: (event: RequestEvent) => string | null | undefined;
 }
 
 export let config: Config | undefined = undefined;
@@ -28,7 +35,8 @@ export function setupI18n(userConfig: UserConfig) {
                 return acc;
             },
             <Record<string, Record<string, string>>>{}
-        )
+        ),
+        setLocale: userConfig.setLocale
     };
 }
 
