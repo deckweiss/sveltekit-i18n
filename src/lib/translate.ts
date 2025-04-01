@@ -1,4 +1,3 @@
-import { browser } from '$app/environment';
 import dateFormat from 'dateformat';
 
 export function translate(
@@ -8,7 +7,7 @@ export function translate(
     params: Record<string, any>
 ): string {
     if (!key) {
-        if (browser) console.warn('Please provide a translation key');
+        console.warn('Please provide a translation key');
         return '[no key provided]';
     }
 
@@ -16,7 +15,7 @@ export function translate(
     let text: string = translations[selectedLocale]?.[key] ?? '';
 
     if (!text) {
-        if (browser) console.warn(`Translation for locale ${selectedLocale} not found`, key);
+        console.warn(`Translation for locale ${selectedLocale} not found`, key);
         return key;
     }
 
@@ -65,7 +64,7 @@ export function translate(
                             wholeInterpolation,
                             dateFormat(params[varName], functionArguments.format)
                         );
-                    } else if (browser) {
+                    } else {
                         console.warn(
                             `Translation '${text}' is missing required parameter 'format'. Example: '{{date, date(format: dd.mm.yyyy)}}'`
                         );
