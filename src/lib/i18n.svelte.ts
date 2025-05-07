@@ -39,7 +39,9 @@ export class I18nImpl implements I18n {
 
         if (browser) {
             if (this.config.useCookie) {
-                document.cookie = `${this.config.cookieName}=${newLocale};path=/`;
+                const expires = new Date();
+                expires.setFullYear(expires.getFullYear() + 1);
+                document.cookie = `${this.config.cookieName}=${newLocale};path=/;expires=${expires.toUTCString()}`;
             } else {
                 document.cookie = `${this.config.cookieName}=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
             }
