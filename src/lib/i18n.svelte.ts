@@ -16,6 +16,7 @@ export class I18nImpl implements I18n {
         private config: Config
     ) {
         this.currentLocale = currentLocale;
+        this.setLocale(currentLocale);
     }
 
     get locale() {
